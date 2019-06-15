@@ -12,7 +12,10 @@ sudo wget -O /etc/yum.repos.d/nginx.repo https://raw.githubusercontent.com/zulus
 sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
 sudo yum -y install jenkins nginx net-tools policycoreutils-python
 sudo wget -O /etc/sysconfig/jenkins https://raw.githubusercontent.com/zulus911/lectures/master/lecture2/jenkins
-sudo wget -O /etc/nginx/conf.d/default.conf https://raw.githubusercontent.com/zulus911/lectures/master/lecture2/default.conf
+sudo cp /vagrant/default.conf /etc/nginx/conf.d/default.conf
+
+sudo semanage port -a -t http_port_t -p tcp 22222
+
 sudo service jenkins start
 sudo service nginx start
 EOF
