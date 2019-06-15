@@ -2,7 +2,7 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 
 $script = <<-EOF
 export LC_ALL=en_US.UTF-8
-#sudo yum -y update
+sudo yum -y update
 sudo yum -y install wget
 sudo yum -y install java-1.8.0-openjdk
 sudo mkdir /etc/yum.repo.d
