@@ -15,6 +15,7 @@ sudo wget -O /etc/sysconfig/jenkins https://raw.githubusercontent.com/zulus911/l
 sudo cp /vagrant/default.conf /etc/nginx/conf.d/default.conf
 
 sudo semanage port -a -t http_port_t -p tcp 22222
+sudo systemctl enable nginx
 
 sudo service jenkins start
 sudo service nginx start
