@@ -1,0 +1,44 @@
+1. Ubuntu 18.04 iso is used (as live CD)
+
+sudo su
+lsblk  (or fdisk -l)
+mkdir /mnt/chroot
+mount /dev/sda2 /mnt/chroot
+cd /mnt/chroot
+chmod 755 bin/*
+chmod 755 usr/bin/*
+
+dpkg --search libpcre.so.3  (search for missed libpcre.so.3)
+cd /lib/x86_64-linux-gnu
+
+chroot /mnt/chroot
+ln -s libpcre.so.3.13.3 libpcre.so.3
+
+sudo passwd root
+
+
+2. VM loading
+
+sudo su
+dhclient -r
+dhclient
+ifconfig  (to see IP address)
+nano /etc/apache2/ports.conf
+    all "Listen 80"
+nano /etc/apache2/sites-enabled/wp.conf
+    port 80 instead of 443; remove SSL
+service apache2 start
+
+MySQL root reset with mysqld_safe:
+    mkdir /var/run/mysqld
+    mysqld_safe --skip-grant-tables &
+    (in other terminal)
+        mysql -uroot
+        USe mysql;
+        UPDATE user SET password=PASSWORD('NEW-PASSWORD') WHERE user='root';
+        FLUSH PRIVILEGES;
+Not forget to stop/kill mysqld
+GRANT ALL PREVILEGES On wordpress.* TO wp@localhost;
+service mysql start
+
+ufw allow 80/tcp
