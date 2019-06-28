@@ -34,11 +34,14 @@ MySQL root reset with mysqld_safe:
     mysqld_safe --skip-grant-tables &
     (in other terminal)
         mysql -uroot
-        USe mysql;
-        UPDATE user SET password=PASSWORD('NEW-PASSWORD') WHERE user='root';
-        FLUSH PRIVILEGES;
+            USE mysql;
+            UPDATE user SET password=PASSWORD('NEW-PASSWORD') WHERE user='root';
+            FLUSH PRIVILEGES;
+            exit;
 Not forget to stop/kill mysqld
-GRANT ALL PREVILEGES ON wordpress.* TO wp@localhost;
+mysql -uroot -pNEW-PASSWORD
+    GRANT ALL PREVILEGES ON wordpress.* TO wp@localhost;
+    exit;
 service mysql start
 
 ufw allow 80/tcp
