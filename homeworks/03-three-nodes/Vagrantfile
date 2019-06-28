@@ -1,0 +1,56 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+$scriptNginx = <<-EOF
+export LC_ALL=en_US.UTF-8
+sudo apt-get -y update
+sudo apt-get -y install nginx
+sudo cp /vagrant/nginx.upstream-jenkins.conf /etc/nginx/sites-available/default
+sudo service nginx reload
+EOF
+
+$scriptJenkins = <<-EOF
+export LC_ALL=en_US.UTF-8
+## This makes debconf use a frontend that expects no interactive input at all, preventing it from even trying to access stdin
+## (to prevent "dpkg-preconfigure: unable to re-open stdin: No such file or directory"):
+# export DEBIAN_FRONTEND=noninteractive
+## But it does not wokr for me :-(
+sudo apt-get -y update
+
+# Add repositories
+sudo add-apt-repository -y ppa:openjdk-r/ppa
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+
+# Install software
+sudo apt-get -y update
+sudo apt-get install -y openjdk-8-jre
+sudo apt-get -y install jenkins
+EOF
+
+
+Vagrant.configure("2") do |config|
+  config.vm.define "cluster-nginx" do |item|
+    item.vm.box = "ubuntu/trusty64"
+    item.vm.hostname = "ubuntu.nginx.host"
+    item.vm.network "public_network"
+    item.vm.network "private_network", ip: "192.168.0.10"
+    item.vm.provision "shell", inline: $scriptNginx
+  end
+
+  config.vm.define "cluster-jenkins-1" do |item|
+    item.vm.box = "ubuntu/trusty64"
+    item.vm.hostname = "ubuntu.jenkins1.host"
+    item.vm.network "private_network", ip: "192.168.0.11"
+    item.vm.provision "shell", inline: $scriptJenkins
+  end
+
+  config.vm.define "cluster-jenkins-2" do |item|
+    item.vm.box = "ubuntu/trusty64"
+    item.vm.hostname = "ubuntu.jenkins2.host"
+    item.vm.network "private_network", ip: "192.168.0.12"
+    item.vm.provision "shell", inline: $scriptJenkins
+  end
+end
