@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/trusty64"
+
+  config.vm.define "ubuntu-test" do |t|
+  end
+
+  config.vm.box_check_update = false
+
+  config.vm.network "forwarded_port", guest: 80, host: 5000, host_ip: "127.0.0.1"
+
+  config.vm.synced_folder "shared_folder", "/vagrant_data"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  config.vm.hostname = "ubuntu-test-host"
+
+  config.vm.provider "virtualbox" do |vb|
+    # vb.gui = false
+    # vb.memory = 1024
+    vb.check_guest_additions = false
+  end
+end
