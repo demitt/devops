@@ -8,10 +8,10 @@ cd /mnt/chroot
 chmod 755 bin/*
 chmod 755 usr/bin/*
 
+chroot /mnt/chroot
+
 dpkg --search libpcre.so.3  (search for missed libpcre.so.3)
 cd /lib/x86_64-linux-gnu
-
-chroot /mnt/chroot
 ln -s libpcre.so.3.13.3 libpcre.so.3
 
 sudo passwd root
