@@ -4,12 +4,11 @@ LOGS_DIR=/tmp/jenkinsLogs
 POSITIVE_VALUES_COUNT=2
 
 # TODO: get latest logs
-# TODO: process issue with digits in the end of base path
+# TODO: process issue with digits in the end of the base path (smth like qwe421.log, qwe422.log, qwe423.log...)
 
 logsList=$(ls $LOGS_DIR)
-
 firstLogName=$(echo "$logsList" | head -1)
-baseNamePart=$(echo $firstLogName | grep -oP "^.+?(?=\d{1,}\.log$)")
+baseNamePart=$(echo "$firstLogName" | grep -oP "^.+?(?=\d{1,}\.log$)")
 
 status=0
 logNumber=0
@@ -20,7 +19,7 @@ while [ $status -lt $POSITIVE_VALUES_COUNT ]; do
     
     # Check if file exists:
     if [ ! -f "$log" ]; then
-        echo "There is no stable logs"
+        echo "There is no stable state"
         exit 0
     fi
     
