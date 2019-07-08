@@ -3,10 +3,9 @@
 LOGS_DIR=/tmp/jenkinsLogs
 POSITIVE_VALUES_COUNT=2
 
-# TODO: get latest logs
 # TODO: process issue with digits in the end of the base path (smth like qwe421.log, qwe422.log, qwe423.log...)
 
-logsList=$(ls $LOGS_DIR)
+logsList=$(ls -t $LOGS_DIR)  # t-argument provides sorting by update time (mtime) to get latest logs
 firstLogName=$(echo "$logsList" | head -1)
 baseNamePart=$(echo "$firstLogName" | grep -oP "^.+?(?=\d{1,}\.log$)")
 
