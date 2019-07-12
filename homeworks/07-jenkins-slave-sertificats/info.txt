@@ -1,0 +1,31 @@
+Useful links
+
+    How to Setup Jenkins Master and Slave on Ubuntu 18.04 LTS
+    https://www.howtoforge.com/tutorial/ubuntu-jenkins-master-slave/
+
+    Java Keytool
+    http://tutorials.jenkov.com/java-cryptography/keytool.html
+
+
+Init OS configuration of nodes - see Vagrantfile.
+
+Slave node:
+    sudo useradd -m -s /bin/bash jenkins
+    sudo passwd jenkins
+
+Master node:
+    sudo su - jenkins
+    Generate ssh-keypair, add private key to Jenkins (Credentials, global, Add Credentials):
+        Kind: SSH Username with private key
+        Scope: Global
+        Username: jenkins
+        Private key: Enter directly: paste the 'id_rsa' private key of Jenkins user from the master server
+    cd ~/.ssh
+    Upload the public key from the master to slave: ssh-copy-id jenkins@192.168.0.11
+    Add node: Manage Jenkins, Manage Nodes, New node, type name, choose the 'permanent agent'
+        Description: smth like 'slave01 node agent server'
+        Remote root directory: /home/jenkins
+        Labels: smth like 'slave01'
+        Launch method: Launch slave agent via SSH, type the host ip address (192.168.0.11), choose the authentication using 'Jenkins' credential
+    Install Slave Setup Plugin (needs?); Manage Jenkins, Configure System; section Slave Setups... check ckeckbox "???"
+    Create task, check "Restrict where this project can be run", specify node

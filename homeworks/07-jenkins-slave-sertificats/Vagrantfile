@@ -1,0 +1,49 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+$scriptJenkins = <<-EOF
+    export LC_ALL=en_US.UTF-8
+    sudo apt-get -y update
+
+    sudo add-apt-repository -y ppa:openjdk-r/ppa
+    wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+    sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+
+    sudo apt-get -y update
+    sudo apt-get install -y openjdk-8-jre
+    sudo apt-get -y install jenkins
+EOF
+
+$scriptJenkinsSlave = <<-EOF
+    export LC_ALL=en_US.UTF-8
+    sudo apt-get -y update
+
+    sudo apt-get -y install software-properties-common apt-transport-https
+    sudo add-apt-repository -y ppa:openjdk-r/ppa
+    wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+
+    sudo apt-get -y update
+    sudo apt-get install -y openjdk-8-jdk
+EOF
+
+Vagrant.configure("2") do |config|
+  config.vm.define "ubuntu-jenkins" do |item|
+    item.vm.box = "ubuntu/trusty64"
+    item.vm.box_check_update = false
+    item.vm.hostname = "ubuntu.jenkins.host"
+    item.vm.network "public_network", bridge: "enp3s0"
+    item.vm.network "private_network", ip: "192.168.0.10"
+    item.vm.provision "shell", inline: $scriptJenkins
+  end
+
+  config.vm.define "ubuntu-jenkins-slave" do |item|
+    item.vm.box = "ubuntu/trusty64"
+    item.vm.box_check_update = false
+    item.vm.hostname = "ubuntu.jenkins.slave.host"
+    item.vm.network "public_network"
+    item.vm.network "private_network", ip: "192.168.0.11"
+    item.vm.provision "shell", inline: $scriptJenkinsSlave
+  end
+end
