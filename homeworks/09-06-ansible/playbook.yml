@@ -1,0 +1,47 @@
+- hosts: frontend
+  become: yes
+  tasks:
+    - name: Install Nginx
+      apt: ...
+
+    - name: Configure Nginx
+      command: ...
+
+    - name: Deploy JS-bundle
+      command: ...
+
+- hosts: backend
+  become: yes
+  tasks:
+    - name: Install Java, Tomcat etc
+      apt: ...
+
+    - name: Configure Tomcat
+      command: ...
+
+    - name: Deploy app
+      command: ...
+
+    - name: Run app
+      command: ...
+
+- hosts: db
+  become: yes
+  tasks:
+    - name: Install PostgreSQL
+      apt: ...
+
+    - name: Configure PostgreSQL
+      command: ...
+
+    - name: Apply ini migration
+      command: ...
+
+- hosts: redis
+  become: yes
+  tasks:
+    - name: Install Redis
+      apt: ...
+
+    - name: Configure Redis
+      command: ... 

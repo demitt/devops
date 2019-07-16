@@ -1,0 +1,13 @@
+[frontend]
+frontend1.example.com
+frontend2.example.com
+
+[backend]
+backend[1:6].example.com:4444
+
+[db]
+db[1:3].example.com:2323
+
+[redis]
+redis.example.com:5555
+
