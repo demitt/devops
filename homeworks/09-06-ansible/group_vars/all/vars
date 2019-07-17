@@ -1,4 +1,0 @@
-ansible_user: ENCRYPTED
-ansible_ssh_pass: ENCRYPTED
-ansible_ssh_port: 34343
-
