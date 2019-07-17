@@ -3,11 +3,10 @@ frontend1.example.com
 frontend2.example.com
 
 [backend]
-backend[1:6].example.com:4444
+backend[1:6].example.com
 
 [db]
-db[1:3].example.com:2323
+db[1:3].example.com
 
 [redis]
-redis.example.com:5555
-
+redis.example.com
