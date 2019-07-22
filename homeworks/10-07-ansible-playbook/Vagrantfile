@@ -1,0 +1,34 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+$provisionScript = <<-EOF
+    export LC_ALL=en_US.UTF-8
+    sudo apt-get -y update
+    # TODO
+EOF
+
+Vagrant.configure("2") do |config|
+  config.vm.define "ansible-playbook-server" do |item|
+    item.vm.box = "ubuntu/bionic64"
+    item.vm.box_check_update = false
+    item.vm.hostname = "ansible-playbook-server.host"
+    item.vm.network "public_network", bridge: "enp0s7"
+    item.vm.network "private_network", ip: "192.168.0.10"
+    item.vm.provider "virtualbox" do |vb|
+      vb.check_guest_additions = false
+    end
+    item.vm.provision "shell", inline: $provisionScript
+  end
+
+  config.vm.define "ansible-playbook-node" do |item|
+    item.vm.box = "ubuntu/bionic64"
+    item.vm.box_check_update = false
+    item.vm.hostname = "ansible-playbook-node.host"
+    item.vm.network "private_network", ip: "192.168.0.11"
+    item.vm.provider "virtualbox" do |vb|
+      vb.check_guest_additions = false
+    end
+  end
+end
