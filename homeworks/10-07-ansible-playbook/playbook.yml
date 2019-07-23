@@ -1,9 +1,25 @@
 - hosts: all
   become: yes
   gather_facts: no
+
+  vars:
+    users:
+    - name: "vasy"
+      #pass: "..."
+    - name: "pety"
+      #pass: "..."
+    - name: "masha"
+      #pass: "..."
+
   tasks:
-    - name: ...
-      command:
-        name:
-          - ....
-          - ....
+    - name: "Add users"
+      user:
+        name: "{{ item.name }}"
+        password: "{{ vault_new_user_pass | password_hash('sha512') }}"
+      with_items: "{{ users }}"
+
+    - name: "Add authorized keys"
+      authorized_key:
+        user: "{{ item.name }}"
+        key: "{{ lookup('file', 'keys/id_rsa_'+ item.name + '.pub') }}"
+      with_items: "{{ users }}"
