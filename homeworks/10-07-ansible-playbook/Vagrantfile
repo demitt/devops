@@ -9,9 +9,14 @@ $provisionScript = <<-EOF
     sudo apt-get -y update
     sudo apt-get -y install software-properties-common
     sudo apt-get -y install ansible
+
+    cd /vagrant && bash run-playbook-users.sh
+
+    cp keys/* /home/vagrant/.ssh/
 EOF
 
 Vagrant.configure("2") do |config|
+
   config.vm.define "ansible-playbook-server" do |item|
     item.vm.box = "ubuntu/bionic64"
     item.vm.box_check_update = false
@@ -33,4 +38,5 @@ Vagrant.configure("2") do |config|
       vb.check_guest_additions = false
     end
   end
+
 end

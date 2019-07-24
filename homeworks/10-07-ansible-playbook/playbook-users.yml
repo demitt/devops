@@ -5,11 +5,11 @@
   vars:
     users:
     - name: "vasy"
-      #pass: "..."
+      # pass: "different pass from vault (if needs), using password_hash()"
     - name: "pety"
-      #pass: "..."
+      # pass: "different pass from vault (if needs), using password_hash()"
     - name: "masha"
-      #pass: "..."
+      # pass: "different pass from vault (if needs), using password_hash()"
 
   tasks:
     - name: "Add users"
