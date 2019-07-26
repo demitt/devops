@@ -22,6 +22,7 @@ Vagrant.configure("2") do |config|
     item.vm.synced_folder ".", "/vagrant", disabled: true
 
     item.vm.provider "virtualbox" do |vb|
+      vb.name = "ubuntu-test.vm"
       # vb.memory = 1024
       vb.check_guest_additions = false
     end
