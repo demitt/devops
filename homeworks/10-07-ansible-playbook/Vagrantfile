@@ -11,8 +11,6 @@ $provisionScript = <<-EOF
     sudo apt-get -y install ansible
 
     cd /vagrant && bash run-playbook-users.sh
-
-    cp keys/* /home/vagrant/.ssh/
 EOF
 
 Vagrant.configure("2") do |config|
