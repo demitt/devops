@@ -1,0 +1,59 @@
+---
+- name: Specify MySQL root password before installing
+  debconf: name='mysql-server' question='mysql-server/root_password' value='{{mysql_root_password | quote}}' vtype='password'
+  become: true
+
+- name: Confirm MySQL root password before installing
+  debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_root_password | quote}}' vtype='password'
+  become: true
+
+- name: Setup MySQL and required soft
+  apt: 
+    name:
+      - mysql-server
+      - python3-pymysql
+    state: present
+    update_cache: true
+
+- name: Install MySQL
+  service:
+    name: mysql 
+    state: started
+    enabled: true
+
+#- name: Set MySQL root
+#  mysql_user: 
+#     name: "root"
+#     host: "{{ item }}" 
+#     password: "{{ mysql_root_password }}"
+#     login_user: "root"
+#     login_password: "{{ mysql_root_password }}"
+#     priv: "*.*:ALL,GRANT"
+#  with_items:
+#      - "{{ ansible_hostname }}"
+#      - 127.0.0.1
+#      - ::1
+#      - localhost
+
+- name: Set MySQL user
+  mysql_user:
+    name: "{{ mysql_user }}"
+    host: "{{ item }}"
+    password: "{{ mysql_user_password }}"
+    state: present
+    priv: "*.*:ALL"
+    # + SUPER
+    login_user: "root"
+    login_password: "{{ mysql_root_password }}"
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: Create a new DB
+  mysql_db:
+    name: "{{ mysql_dbname }}"
+    state: present
+    login_user: "root"
+    login_password: "{{ mysql_root_password }}"
