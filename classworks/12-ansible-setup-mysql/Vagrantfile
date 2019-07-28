@@ -11,6 +11,11 @@ $provisionScriptServer = <<-EOF
     sudo apt-get -y install ansible
 EOF
 
+$provisionScriptNode = <<-EOF
+    sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    sudo systemctl restart sshd
+EOF
+
 Vagrant.configure("2") do |config|
 
   config.vm.define "ansible-cw-mysql-server" do |item|
@@ -32,5 +37,6 @@ Vagrant.configure("2") do |config|
     item.vm.provider "virtualbox" do |vb|
       vb.check_guest_additions = false
     end
+    item.vm.provision "shell", inline: $provisionScriptNode
   end
 end
