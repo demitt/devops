@@ -1,0 +1,6 @@
+---
+mysql_user: "some_user"
+mysql_dbname: "my_database"
+
+mysql_user_password: "ENCRYPTED"
+mysql_root_password: "ENCRYPTED"
