@@ -1,4 +1,7 @@
 ---
+- include_vars: secret.yml
+
+
 - name: Specify MySQL root password before installing
   debconf: name='mysql-server' question='mysql-server/root_password' value='{{mysql_root_password | quote}}' vtype='password'
   become: true
@@ -7,7 +10,7 @@
   debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_root_password | quote}}' vtype='password'
   become: true
 
-- name: Setup MySQL and required soft
+- name: Setup MySQL and required python module
   apt: 
     name:
       - mysql-server
@@ -21,20 +24,6 @@
     state: started
     enabled: true
 
-#- name: Set MySQL root
-#  mysql_user: 
-#     name: "root"
-#     host: "{{ item }}" 
-#     password: "{{ mysql_root_password }}"
-#     login_user: "root"
-#     login_password: "{{ mysql_root_password }}"
-#     priv: "*.*:ALL,GRANT"
-#  with_items:
-#      - "{{ ansible_hostname }}"
-#      - 127.0.0.1
-#      - ::1
-#      - localhost
-
 - name: Set MySQL user
   mysql_user:
     name: "{{ mysql_user }}"
@@ -42,7 +31,6 @@
     password: "{{ mysql_user_password }}"
     state: present
     priv: "*.*:ALL"
-    # + SUPER
     login_user: "root"
     login_password: "{{ mysql_root_password }}"
   with_items:
@@ -50,6 +38,8 @@
     - 127.0.0.1
     - ::1
     - localhost
+
+# TODO: flush privileges?
 
 - name: Create a new DB
   mysql_db:

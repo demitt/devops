@@ -1,5 +1,6 @@
 ---
 mysql_user: "some_user"
-mysql_user_password: "1234567890"
-mysql_root_password: "justRootPass"
 mysql_dbname: "my_database"
+
+mysql_user_password: "ENCRYPTED"
+mysql_root_password: "ENCRYPTED"
