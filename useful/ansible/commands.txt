@@ -3,6 +3,9 @@ ansible groupNameOrHostName -i hosts -m shell -a 'uname -a'
 ansible groupNameOrHostName -i hosts -m copy -a 'src=/path/to/file dest=/target/destination/'
 
 ansible-playbook -i hosts --vault-password-file=.vault_pass playbook.yml
+ansible-playbook --list-tasks playbook.yml
+ansible-playbook --check -i hosts playbook.yml  # dry-run
+ansible-playbook -i hosts --step playbook.yml  # step by step execution
 
 ansible-vault encrypt group_vars/all/vault
 ansible-vault view group_vars/all/vault
