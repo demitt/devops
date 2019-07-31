@@ -6,10 +6,6 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 $provisionScript = <<-EOF
     export LC_ALL=en_US.UTF-8
     sudo apt-get -y update
-
-    # Allow ssh password authentication:
-    # sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-    # sudo systemctl restart sshd
 EOF
 
 Vagrant.configure("2") do |config|
