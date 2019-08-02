@@ -1,0 +1,38 @@
+---
+- name: Add Certbot repository
+  # requires: python-apt (python 2) or python3-apt (python 3)
+  apt_repository:
+    repo: ppa:certbot/certbot
+    state: present
+    update_cache: true
+
+- name: Setup Certbot
+  apt: 
+    name: python-certbot-nginx
+    state: present
+
+- name: Gererate certificate
+  acme_certificate:
+    # TODO
+    # https://docs.ansible.com/ansible/latest/modules/acme_certificate_module.html#acme-certificate-module
+    # requires: python >= 2.6; either openssl or cryptography >= 1.5
+    ### sudo certbot --nginx -d myserver.com -d www.myserver.com
+    # TODO: move "myserver.com" to variables
+
+- name: Setup Nginx
+  apt: 
+    name: nginx
+    state: present
+
+- name: Copy Nginx config
+  copy:
+    src: "{{ role_path }}/files/nginx.main.conf"
+    dest: /etc/nginx/sites-available/default
+    backup: true
+    # TODO: add permissions for file? (user? user & group?)
+
+- name: Test Nginx config
+  # ...
+
+- name: Restart Nginx
+  # service...

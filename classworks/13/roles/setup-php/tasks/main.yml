@@ -1,0 +1,14 @@
+---
+- name: Setup PHP
+  apt: 
+    name:
+      - php=7.2
+      - php-fpm=7.2
+    state: present
+    update_cache: true
+
+- name: Configure PHP
+  # TODO
+  # /etc/php/7.2/fpm/pool.d/www.conf:
+  #   "listen = /run/php/php7.2-fpm.sock"
+  #   "pm."
