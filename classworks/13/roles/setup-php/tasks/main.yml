@@ -1,25 +1,21 @@
 ---
-#- name: Add PHP-7.2 repository
-#  apt_repository:
-#    repo: ppa:ondrej/php
-#    state: present
-#    update_cache: true
+- name: Add PHP repository
+  apt_repository:
+    repo: "ppa:ondrej/php"
+    state: present
+    update_cache: true
 
-- name: Setup PHP
+- name: Install PHP
   apt: 
-    name:
-      - php7.2
-      - php7.2-fpm
+    name: php7.3-fpm
     state: present
     update_cache: true
 
 - name: Configure PHP
-  command: "sudo sed -ie '\
-    s!^listen = /run/php/php7.2-fpm.sock!listen = 9000!; \
+  command: "sed -i -e '\
+    s!^listen = /run/php/php7.3-fpm.sock!listen = 9000!; \
     s!^pm.max_children = 5!pm.max_children = 10!; \
     s!^pm.min_spare_servers = 1!pm.min_spare_servers = 3!; \
     s!^pm.max_spare_servers = 3!pm.max_spare_servers = 5!; \
     s!^;pm.max_requests = 500!pm.max_requests = 1000!\
-  '\
-  /etc/php/7.2/fpm/pool.d/www.conf\
-  "
+  ' /etc/php/7.3/fpm/pool.d/www.conf"
