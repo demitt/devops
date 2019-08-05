@@ -1,4 +1,4 @@
-- hosts: nginx
+- hosts: php
   become: yes
   gather_facts: no
 

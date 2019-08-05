@@ -11,8 +11,8 @@
     name: python-certbot-nginx
     state: present
 
-- name: Gererate certificate
-  acme_certificate:
+#- name: Gererate certificate
+#  acme_certificate:
     # TODO
     # https://docs.ansible.com/ansible/latest/modules/acme_certificate_module.html#acme-certificate-module
     # requires: python >= 2.6; either openssl or cryptography >= 1.5
@@ -31,8 +31,19 @@
     backup: true
     # TODO: add permissions for file? (user? user & group?)
 
+- name: Create Nginx folder for static content
+  file:
+    path: /var/www/html/static
+    state: directory
+    mode: 0775
+
 - name: Test Nginx config
-  # ...
+  shell: "nginx -t"
+  register: nginxConfigStatus
+
+- debug: msg="{{ nginxConfigStatus.stdout_lines }}"
 
 - name: Restart Nginx
-  # service...
+  service:
+    name: nginx
+    state: restarted

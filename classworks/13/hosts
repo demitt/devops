@@ -1,5 +1,10 @@
 [nginx]
-192.168.0.11 ansible_ssh_pass=vagrant ansible_ssh_user=vagrant
+192.168.0.11
+
+[php]
+192.168.0.11
 
 [all:vars]
+ansible_ssh_pass=vagrant
+ansible_ssh_user=vagrant
 ansible_python_interpreter=/usr/bin/python3
