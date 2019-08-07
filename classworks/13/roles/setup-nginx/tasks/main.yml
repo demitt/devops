@@ -15,8 +15,7 @@
 #  acme_certificate:
     # TODO
     # requires: python >= 2.6; either openssl or cryptography >= 1.5
-    ### sudo certbot --nginx -d myserver.com -d www.myserver.com
-    # TODO: move "myserver.com" to variables
+    ### "sudo certbot --nginx -d {{ server_name }} -d www.{{ server_name }}"
 
 - name: Setup Nginx
   apt: 
@@ -27,7 +26,6 @@
   template:
     src: "{{ role_path }}/templates/nginx.conf.j2"
     dest: /etc/nginx/sites-available/default
-    # TODO: add permissions for file? (user? user & group?)
 
 - name: Create Nginx folder for static content
   file:
@@ -37,9 +35,6 @@
 
 - name: Test Nginx config
   shell: "nginx -t"
-  register: nginxConfigStatus
-
-- debug: msg="{{ nginxConfigStatus.stdout_lines }}"
 
 - name: Restart Nginx
   service:

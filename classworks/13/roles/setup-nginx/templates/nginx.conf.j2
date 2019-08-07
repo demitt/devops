@@ -1,16 +1,16 @@
 upstream php {
-    server {{ php_address }}:9000;
+    server {{ groups['php'][0] }}:9000;
 }
 
 server {
-    listen 80; #listen 443 ssl http2
-    # ssl_certificate /etc/ssl/bundle.crt;
-    # ssl_certificate_key /etc/ssl/vash_domen.key;
-    server_name {{ server_name_list }};
+    listen 443 ssl http2;
+    # TODO: ssl_certificate /etc/ssl/bundle.crt;
+    # TODO: ssl_certificate_key /etc/ssl/moy_domen.key;
+    server_name {{ server_name }};
     root /var/www/html;
 
     location ~ \.php$ {
-        # TODO ?
+        # TODO: smth else?
         fastcgi_pass php;
         fastcgi_param HTTPS on;
     }
