@@ -1,6 +1,5 @@
 ---
 - name: Add Certbot repository
-  # requires: python-apt (python 2) or python3-apt (python 3)
   apt_repository:
     repo: ppa:certbot/certbot
     state: present
@@ -10,12 +9,6 @@
   apt: 
     name: python-certbot-nginx
     state: present
-
-#- name: Gererate certificate
-#  acme_certificate:
-    # TODO
-    # requires: python >= 2.6; either openssl or cryptography >= 1.5
-    ### "sudo certbot --nginx -d {{ server_name }} -d www.{{ server_name }}"
 
 - name: Setup Nginx
   apt: 
@@ -35,6 +28,14 @@
 
 - name: Test Nginx config
   shell: "nginx -t"
+
+#- name: Gererate certificate
+#  acme_certificate:
+    # requires: python >= 2.6; either openssl or cryptography >= 1.5
+    # TODO
+
+#- name: Uncomment SSL certs in Nginx config
+#  command: "sed -i 's/#WILL_BE_UNCOMMENTED_BY_ANSIBLE_TASK#//' /etc/nginx/sites-available/default"
 
 - name: Restart Nginx
   service:
