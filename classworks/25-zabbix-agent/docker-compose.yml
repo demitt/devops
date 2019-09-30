@@ -1,0 +1,41 @@
+version: '3'
+services:
+
+  zabbix-server:
+    image: "zabbix/zabbix-server-mysql:ubuntu-4.2.6"
+    environment:
+      DB_SERVER_HOST: "mysql-server-for-zabbix"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      ZBX_DEBUGLEVEL: 3
+    depends_on:
+      - "mysql-server-for-zabbix"
+
+  zabbix-ui:
+    image: "zabbix/zabbix-web-nginx-mysql:ubuntu-4.2.6"
+    ports:
+      - "8001:80"
+    environment:
+      ZBX_SERVER_HOST: "zabbix-server"
+      DB_SERVER_HOST: "mysql-server-for-zabbix"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_DATABASE: "zabbix"
+    depends_on:
+      - "zabbix-server"
+      - "mysql-server-for-zabbix"
+
+  mysql-server-for-zabbix:
+    image: "mysql:5.7"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: "zabbix"
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  zabbix-agent:
+    image: zabbix/zabbix-agent:ubuntu-4.2.6
+    environment:
+      ZBX_HOSTNAME: "first_zabbix_agent"
+      #ZBX_SERVER_HOST: "zabbix-server"
