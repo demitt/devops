@@ -1,0 +1,8 @@
+Naming:
+
+XX-YY-description
+XX(ZZ)-YY-description
+
+    XX - lesson number (from my copybook)
+    ZZ - lesson number (from LMS)
+    YY - number by homework order (from LMS)
