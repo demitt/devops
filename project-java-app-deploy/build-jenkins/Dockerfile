@@ -12,5 +12,8 @@ USER jenkins
 
 COPY createAdmin.groovy /var/jenkins_home/init.groovy.d/createAdmin.groovy
 
+# Add custom plugins' configurations
+COPY --chown=jenkins:jenkins plugin-configs/* /var/jenkins_home/
+
 # Skipping Jenkins default setup wizard
 ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
