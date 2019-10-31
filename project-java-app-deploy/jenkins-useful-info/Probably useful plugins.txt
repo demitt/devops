@@ -1,0 +1,13 @@
+Parameterized Trigger Plugin
+    parameterized-trigger
+
+Http Request Plugin
+    http_request
+
+Docker Slaves Plugin
+    docker-slaves
+
+Pipeline Multibranch Plugin (Workflow Multibranch Plugin)
+    workflow-multibranch
+
+Jenkins Configuration as Code (a.k.a. JCasC) Plugin
