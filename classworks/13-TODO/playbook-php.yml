@@ -1,0 +1,6 @@
+- hosts: php
+  become: yes
+  gather_facts: no
+
+  roles:
+    - setup-php

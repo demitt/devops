@@ -1,0 +1,43 @@
+---
+- name: Add Certbot repository
+  apt_repository:
+    repo: ppa:certbot/certbot
+    state: present
+    update_cache: true
+
+- name: Setup Certbot
+  apt: 
+    name: python-certbot-nginx
+    state: present
+
+- name: Setup Nginx
+  apt: 
+    name: nginx
+    state: present
+
+- name: Copy Nginx config
+  template:
+    src: "{{ role_path }}/templates/nginx.conf.j2"
+    dest: /etc/nginx/sites-available/default
+
+- name: Create Nginx folder for static content
+  file:
+    path: /var/www/html/static
+    state: directory
+    mode: 0775
+
+- name: Test Nginx config
+  shell: "nginx -t"
+
+#- name: Gererate certificate
+#  acme_certificate:
+    # requires: python >= 2.6; either openssl or cryptography >= 1.5
+    # TODO
+
+#- name: Uncomment SSL certs in Nginx config
+#  command: "sed -i 's/#WILL_BE_UNCOMMENTED_BY_ANSIBLE_TASK#//' /etc/nginx/sites-available/default"
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
