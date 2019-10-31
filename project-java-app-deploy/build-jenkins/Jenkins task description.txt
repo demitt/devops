@@ -1,0 +1,41 @@
+Parameters:
+    - COMMITS_NUMBER
+        - choises:
+            all
+            10
+            100
+            500
+            1000
+            10000
+        - descr: Number of commits
+    - HASH
+        - descr: Commit hash (or some part of) to find [OPTIONAL]
+
+
+Script:
+
+    #!/bin/bash
+
+
+    if [[ ! $HASH =~ ^([0-9a-f]{2,}|)$ ]]; then
+        echo "Your hash seems not to be a valid commit hash. Exiting."
+        exit 1
+    fi
+
+    if [ "$COMMITS_NUMBER" = "all" ]; then
+        gitOutput=$(git log --pretty=format:"%H %s (%an, %ad)")
+    else
+        gitOutput=$(git log -n$COMMITS_NUMBER --pretty=format:"%H %s (%an, %ad)")
+    fi
+
+    commitsTotal=$(git rev-list --count HEAD)
+
+    echo "----------------------------------------------------------------------"
+    echo "Number of commits: $COMMITS_NUMBER, commits total in repo: $commitsTotal, search: \"$HASH\""
+    if [ -n "$HASH" ]; then
+        echo "----------------------------------------------------------------------"
+        echo "$gitOutput" | grep "$HASH"
+    fi
+    echo "----------------------------------------------------------------------"
+    echo "$gitOutput"
+    echo
