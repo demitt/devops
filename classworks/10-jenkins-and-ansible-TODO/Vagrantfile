@@ -1,0 +1,53 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+$provisionScript = <<-EOF
+    export LC_ALL=en_US.UTF-8
+
+    sudo add-apt-repository -y ppa:openjdk-r/ppa
+    wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+    sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+    sudo apt-add-repository -y ppa:ansible/ansible
+
+    sudo apt-get -y update
+    sudo apt-get install -y openjdk-8-jre
+    sudo apt-get -y install jenkins
+    sudo apt-get -y install software-properties-common
+    sudo apt-get -y install ansible
+EOF
+
+Vagrant.configure("2") do |config|
+    config.vm.define "jenkins-ansible-server" do |item|
+        item.vm.box = "ubuntu/bionic64"
+        item.vm.box_check_update = false
+        item.vm.hostname = "jenkins-ansible-server.host"
+        item.vm.network "public_network"
+        item.vm.network "private_network", ip: "192.168.0.10"
+        item.vm.provider "virtualbox" do |vb|
+            vb.check_guest_additions = false
+        end
+        item.vm.provision "shell", inline: $provisionScript
+    end
+
+    config.vm.define "jenkins-ansible-node-1" do |item|
+        item.vm.box = "generic/centos7"
+        item.vm.box_check_update = false
+        item.vm.hostname = "jenkins-ansible-node-1.host"
+        item.vm.network "private_network", ip: "192.168.0.11"
+        item.vm.provider "virtualbox" do |vb|
+            vb.check_guest_additions = false
+        end
+    end
+
+    config.vm.define "jenkins-ansible-node-2" do |item|
+        item.vm.box = "generic/centos7"
+        item.vm.box_check_update = false
+        item.vm.hostname = "jenkins-ansible-node-2.host"
+        item.vm.network "private_network", ip: "192.168.0.12"
+        item.vm.provider "virtualbox" do |vb|
+            vb.check_guest_additions = false
+        end
+    end
+end
