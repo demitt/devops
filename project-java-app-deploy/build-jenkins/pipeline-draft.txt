@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
+    tools {
+        maven 'maven-3.6.2'
+    }
+
+    stages {
+        stage('Clone sources') {
+            steps {
+                git url: 'https://github.com/demitt/devops-course-app.git'
+            }
+        }
+
+        stage('Print env variables') {
+            steps {
+                sh 'echo "JENKINS_USER=$JENKINS_USER"'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn -Dmaven.test.skip=true  clean package'
+                echo 'TMP: TESTS HAVE BEEN SKIPPED'
+            }
+            post {
+                success { /* unsuccessful, success, failure, unstable, fixed... */
+                    echo 'POST Build step'
+                }
+            }
+            // TODO exit if not success
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploy... Temporary disabled'
+                // deploy adapters: [tomcat9(credentialsId: 'tomcat-deployer', path: '', url: 'http://tomcat:8080')], contextPath: 'devOpsApp', onFailure: false, war: '**/*.war'
+            }
+        }
+    }
+}
