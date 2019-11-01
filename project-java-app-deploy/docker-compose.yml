@@ -12,6 +12,11 @@ services:
       - JENKINS_USER=$JENKINS_USER
       - JENKINS_PASS=$JENKINS_PASS
 
+      - TOMCAT_MANAGER_SCRIPT_USER=$TOMCAT_MANAGER_SCRIPT_USER
+      - TOMCAT_MANAGER_SCRIPT_PASS=$TOMCAT_MANAGER_SCRIPT_PASS
+      - TOMCAT_MANAGER_SCRIPT_CREDS_ID=tomcat-deployer
+      - TOMCAT_MANAGER_SCRIPT_CREDS_DESCRIPTION=Local tomcat script user (for deploy)
+
   tomcat:
     build:
       context: build-tomcat

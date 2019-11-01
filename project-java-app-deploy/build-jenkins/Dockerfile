@@ -10,7 +10,7 @@ RUN \
     apt-get install -y nano
 USER jenkins
 
-COPY createAdmin.groovy /var/jenkins_home/init.groovy.d/createAdmin.groovy
+COPY groovy-scripts/* /var/jenkins_home/init.groovy.d/
 
 # Add custom plugins' configurations
 COPY --chown=jenkins:jenkins plugin-configs/* /var/jenkins_home/
